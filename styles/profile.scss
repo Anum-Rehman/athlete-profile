@@ -1,0 +1,70 @@
+@import './constant.scss';
+@import './responsive.scss';
+
+.profile{
+    width: 100%;
+    &_heading{
+        text-align: center;
+        font-size: 3em;
+        font-weight: 700;
+        color: $default-background-color;
+    }
+    &_subheading{
+        color: #2b6777;
+        text-align: center;
+        font-weight: bold;
+        letter-spacing: 2px;
+
+    }
+    &_details{
+        text-align: left;
+        margin: 80px 0 0 0;
+        height: 250px;
+        &__heading{
+            color: #000000;
+            font-weight: bold;
+        }
+    
+        @include respond-to(mobile) {
+            margin: 30px 0 0 0;
+          }
+    }
+    &_about{
+        text-align: left;
+        margin: 80px 0 0 0;
+        height: 250px;
+        &__heading{
+            color: #000000;
+            font-weight: bold;
+        }
+      
+        @include respond-to(mobile) {
+            margin: 30px 0 0 0;
+          }
+    }
+    &_image{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        color: $default-background-color;
+        background-color: #2b6777;
+        margin: 80px 0 0 0;
+        height: 250px;
+        &__avatar{
+
+            margin-top: -89px;
+            height: 8em;
+            width: 8em;
+        }
+        &__heading{
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            font-size: large;
+        }
+        &__summary{
+            color: #c8d8e4;
+        }
+       
+    }
+}

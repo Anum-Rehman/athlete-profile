@@ -17,7 +17,7 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       {/* <Stepper/> */}
-      <About/>
+      {/* <About/> */}
       {/* <Summary/> */}
       {/* <main className={styles.main}>
         <div className={styles.description}>
