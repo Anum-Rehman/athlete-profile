@@ -1,86 +1,101 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Form, Formik } from 'formik';
 import classNames from 'classnames';
 import * as Yup from 'yup';
 import FormTextInput from '../FormTextInput';
-import FormSelectInput from '../FormSelectInput';
-import FormDateInput from '../FormDateInput';
-import { Button } from '@mui/material';
+import FormButton from '../FormButton';
 
-
-
-const genders = [
-    { value: 'male', label: 'Male' },
-    { value: 'female', label: 'Female' },
-    { value: 'other', label: 'Other' }
-];
 const AboutSchema = Yup.object().shape({
-    name: Yup.string()
-        .required('Required')
+    description: Yup.string()
+        .min(4).max(250),
+    team: Yup.string().required("Required"),
+    location: Yup.string().required("Required")
 });
 const About = ({
-    handleNextClick
+    handleNextClick,
+    data,
+    handleEdit
 }) => {
 
     return (
         <Formik
             initialValues={{
-                description: '',
-                location: '',
-                team: ''
+                description: data.description || '',
+                location: data.location || '',
+                team: data.team || '',
+                interest: data.interest || ''
             }}
             validationSchema={AboutSchema}
             onSubmit={handleNextClick}
         >
             {
-                ({ values, errors, touched, handleChange, setFieldValue, isValid, submitCount }) => {
+                ({ values, errors, touched, handleChange, submitCount, isValid }) => {
+                    console.log({errors, values})
                     return (
-                        <Form className="profile">
+                        <Form className="form">
                             <div className="profile__form">
                                 <FormTextInput
-                                    className={classNames("profile__form-input", { "field-error": errors.name && touched.name })}
-                                    name="name"
-                                    label="Name"
-                                    type='alpha'
-                                    value={values.name || ''}
+                                    className={classNames("form-input", { "field-error": errors.description && touched.description })}
+                                    name="description"
+                                    label="Description"
+                                    type='text'
+                                    value={values.description || ''}
                                     onChange={handleChange}
-                                    touched={touched.name}
-                                    inlineError={errors.name && touched.name ? errors.name
+                                    touched={touched.description}
+                                    multiline
+                                    error={errors.description && touched.description ? errors.description
                                         : errors.message
                                             ? errors.message
                                             : ' '}
                                 />
-                                <FormSelectInput
-                                    className={classNames("profile__form-input", { "field-error": errors.gender && touched.gender })}
-                                    name="gender"
-                                    label="Gender"
-                                    placeholder=""
-                                    value={values.gender}
-                                    onChange={e => setFieldValue('gender', e)}
-                                    options={genders}
-                                    touched={touched.gender}
-                                    error={errors.gender && touched.gender ? errors.gender : ' '}
+                                <FormTextInput
+                                    className={classNames("form-input", { "field-error": errors.location && touched.location })}
+                                    name="location"
+                                    label="Location"
+                                    type='text'
+                                    value={values.location || ''}
+                                    onChange={handleChange}
+                                    touched={touched.location}
+                                    error={errors.location && touched.location ? errors.location
+                                        : errors.message
+                                            ? errors.message
+                                            : ' '}
+                                />
+                                <FormTextInput
+                                    className={classNames("form-input", { "field-error": errors.team && touched.team })}
+                                    name="team"
+                                    label="team"
+                                    type='text'
+                                    value={values.team || ''}
+                                    onChange={handleChange}
+                                    touched={touched.team}
+                                    error={errors.team && touched.team ? errors.team
+                                        : errors.message
+                                            ? errors.message
+                                            : ' '}
+                                />
+                                <FormTextInput
+                                    className={classNames("form-input", { "field-error": errors.interest && touched.interest })}
+                                    name="interest"
+                                    label="interest"
+                                    type='text'
+                                    value={values.interest || ''}
+                                    onChange={handleChange}
+                                    touched={touched.interest}
+                                    error={errors.interest && touched.interest ? errors.interest
+                                        : errors.message
+                                            ? errors.message
+                                            : ' '}
                                 />
                             </div>
-                            <FormDateInput
-                                className={classNames("profile__form-input", { "field-error": errors.date_of_birth && touched.date_of_birth })}
-                                name="date_of_birth"
-                                label="Date of Birth"
-                                placeholder="mm/dd/yyyy"
-                                value={values.date_of_birth}
-                                onChange={e => setFieldValue('date_of_birth', e)}
-                                touched={touched.date_of_birth}
-                                error={errors.date_of_birth && touched.date_of_birth ? errors.date_of_birth : ' '}
-                            />
-                            <Button
-                                className="partners__footer_submit-button"
-                                size="large"
+                            <div className='form-buttons__container'>
+                            <FormButton
                                 type="submit"
-                                disabled={(submitCount > 0 && !isValid && !errors.message) || 
-                                    (Object.keys(touched).length === 0 && touched.constructor === Object)}
-                            >
-                                Next
-                            </Button>
+                                disabled={(submitCount > 0 && !isValid && !errors.message) || !values.team || !values.location || !values.description || !values.interest}
+                                label="Next"
+                            />
+                            <FormButton onClick={handleEdit} label="Back" />
+                            </div>
                         </Form>
                     )
                 }

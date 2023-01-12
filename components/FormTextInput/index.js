@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { TextField, Box } from '@mui/material';
 import classNames from 'classnames';
-import styles from './index.module.scss'
 
 const FormTextInput = (props) => {
     const {
@@ -13,24 +12,24 @@ const FormTextInput = (props) => {
         onChange,
         label,
         className,
-        error
+        error,
+        multiline,
+        readOnly
     } = props;
     const alphaRegex = /^[A-Z a-z]+$/;
 
     return (
         <Box
-            sx={{
-                width: 500,
-                maxWidth: '100%',
-            }}
-            className={classNames(className, styles.inputField)}
+            className={className}
         >
             <TextField 
                 fullWidth 
                 label={label}
                 value={value}
                 name={name}
+                multiline={multiline}
                 onChange={onChange}
+                readOnly={readOnly}
                 type={type}
                 onKeyDown={e => type === "alpha" && !e.key.match(alphaRegex) && e.preventDefault()}
                 placeholder={placeholder}

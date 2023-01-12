@@ -13,15 +13,9 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { useRouter } from 'next/router';
 
-function createData(id,name, gender, location) {
-    return {id, name, gender, location };
+function createData(id, name, gender, location) {
+    return { id, name, gender, location };
 }
-const rows = [
-    createData('1','user1', 'male', '123 hjhasf'),
-    createData('2','user1', 'male', '123 hjhasf'),
-    createData('3','user1', 'male', '123 hjhasf'),
-    createData('4','user1', 'male', '123 hjhasf'),
-];
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
         backgroundColor: theme.palette.common.black,
@@ -31,16 +25,17 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
         fontSize: 14,
     },
 }));
-const ListView = () => {
+
+const List = ({ profiles }) => {
     const router = useRouter();
 
-    const handleView = (id) =>{
+    const handleView = (id) => {
         router.push(`/profile/${id}`)
     }
 
     return (
         <div>
-            <Typography variant='h5' className="listHeading">List Of Users</Typography>
+            <Typography variant='h5' className="listHeading">List Of Athelete</Typography>
             <TableContainer component={Paper}>
                 <Table className="listTable" size="large" aria-label="a dense table">
                     <TableHead>
@@ -53,21 +48,21 @@ const ListView = () => {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {rows.map((row) => (
+                        {profiles.map((profile) => (
                             <TableRow
-                                key={row.name}
+                                key={profile._id}
                                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                             >
                                 <TableCell>
                                     <Avatar alt="Cindy Baker" src="/static/images/avatar/3.jpg" />
                                 </TableCell>
-                                <TableCell align="left">{row.name}</TableCell>
-                                <TableCell align="left">{row.gender}</TableCell>
-                                <TableCell align="left">{row.location}</TableCell>
-                                <TableCell align="left">    
-                                <IconButton edge="end" aria-label="delete" onClick={()=>handleView(row.id)}>
-                                    <VisibilityOutlinedIcon/>
-                                </IconButton></TableCell>
+                                <TableCell align="left">{profile.name}</TableCell>
+                                <TableCell align="left">{profile.gender}</TableCell>
+                                <TableCell align="left">{profile.location}</TableCell>
+                                <TableCell align="left">
+                                    <IconButton edge="end" aria-label="delete" onClick={() => handleView(profile._id)}>
+                                        <VisibilityOutlinedIcon />
+                                    </IconButton></TableCell>
                             </TableRow>
                         ))}
                     </TableBody>
@@ -77,7 +72,19 @@ const ListView = () => {
     )
 }
 
-export default ListView
+export default List
+
+export async function getServerSideProps() {
+    const response = await fetch('http://localhost:3000/api/users');
+    const profiles = await response.json();
+    return {
+        props: {
+            profiles: profiles.data
+        }
+    }
+}
+
+
 
 
 

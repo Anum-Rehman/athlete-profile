@@ -1,10 +1,18 @@
 import React from 'react';
-import { Button, Stack } from '@mui/material';
+import { Button } from '@mui/material';
+import classNames from 'classnames';
 
-export default function FormButton({ label, className, disabled }) {
-    return (
-      <Stack spacing={2} className={className}>
-        <Button variant="contained" color="success" disabled={disabled}>{label}</Button>
-      </Stack>
-    );
-  }
+const FormButton = ({ label, className, disabled, onClick, type }) => {
+  return (
+    <Button className={classNames("form-button", className)}
+      variant="contained"
+      disabled={disabled}
+      onClick={onClick}
+      type={type}
+    >
+      {label}
+    </Button>
+  );
+}
+
+export default FormButton;
