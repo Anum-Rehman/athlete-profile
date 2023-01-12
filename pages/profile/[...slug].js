@@ -61,6 +61,16 @@ const Profile = () => {
 
 export default Profile
 export async function getServerSideProps({res,req,params}) {
+    try {
+      let response = await fetch('http://localhost:3000/api/hello');
+      let posts = await response.json();
+  console.log(posts)
+      return {
+        props: { posts: JSON.parse(JSON.stringify(posts)) },
+      };
+    } catch (e) {
+      console.error(e);
+    }
   console.log(params.slug[0],"<===params")
   return {
     props: {}, // will be passed to the page component as props
