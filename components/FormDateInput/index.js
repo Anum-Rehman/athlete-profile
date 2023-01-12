@@ -1,37 +1,52 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { TextField, Stack } from "@mui/material";
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
+import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import classNames from 'classnames';
+import styles from './index.module.scss';
+import dayjs from 'dayjs';
 
-import DatePicker from 'react-datepicker';
+const FormDateInput = ({ className, value, onChange, label, error }) => {
+    const [screenWidth, setScreenWidth] = useState(0);
+    const handleResize = () => setScreenWidth(window.innerWidth);
 
-import { format, getYear, setYear } from 'date-fns';
+    useEffect(() => {
+        setScreenWidth(window.innerWidth);
+    }, [])
 
-import 'react-datepicker/dist/react-datepicker.css';
+    useEffect(() => {
+      window.addEventListener('resize', handleResize);
+      return () => window.removeEventListener('resize', handleResize);
+    }, [handleResize]);
 
-const FormDateInput = ({ className, value, placeholder, onChange, label, error }) => {
-
-    const maxDate = setYear(new Date(), getYear(new Date()) - 18);
-
+    var today = dayjs(new Date()).format('DD/MM/YYYY');
+    console.log({ today, screenWidth })
     return (
-        <div className={`date-picker ${className}`}>
-            <DatePicker
-                className={"date-picker__item"}
-                selected={value ? new Date(value) : ''}
-                onChange={(value) => onChange(format(new Date(value), "EEE MMM dd yyyy HH:mm:ss"))}
-                dateFormat="MM/dd/yyyy"
-                placeholderText={placeholder}
-                minDate={setYear(new Date(), 1920)}
-                maxDate={maxDate}
-                showMonthDropdown
-                showYearDropdown
-                dropdownMode="select"
-                popperModifiers={{
-                    flip: {
-                        boundariesElement: 'scrollParent'
-                    },
-                }}
-            />
-            {label && <label className="text-input__label">{label}</label>}
+        <>
+            <LocalizationProvider dateAdapter={AdapterDayjs} className={classNames(className, styles.dateInput)}>
+                <Stack>
+                    {screenWidth > 850 ? <DesktopDatePicker
+                        label={label}
+                        defaultDate={today}
+                        inputFormat="MM/DD/YYYY"
+                        value={value}
+                        onChange={onChange}
+                        renderInput={(params) => <TextField {...params} variant="standard" />}
+                    />
+                        : <MobileDatePicker
+                            label={label}
+                            defaultDate={today}
+                            inputFormat="MM/DD/YYYY"
+                            value={value}
+                            onChange={onChange}
+                            renderInput={(params) => <TextField {...params} variant="standard" />}
+                        />}
+                </Stack>
+            </LocalizationProvider>
             {error && <label className="text-input__label-error">{error}</label>}
-        </div>
+        </>
     )
 
 }

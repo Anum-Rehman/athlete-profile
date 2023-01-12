@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Form, Formik } from 'formik';
 import classNames from 'classnames';
+import FormTextInput from '../FormTextInput';
+import FormDateInput from '../FormDateInput';
+import FormSelectInput from '../FormSelectInput';
+import FormButton from "../FormButton";
 
 const BasicInfoSchema = Yup.object().shape({
     name: Yup.string()
@@ -33,7 +37,7 @@ const BasicInfo = ({
                 ({ values, errors, touched, handleChange, setFieldValue, isValid, submitCount }) => {
                     return (
                         <Form className="profile">
-                            <div className="profile__form">
+                            {/* <div className="profile__form"> */}
                                 <FormTextInput
                                     className={classNames("profile__form-input", { "field-error": errors.name && touched.name })}
                                     name="name"
@@ -42,7 +46,7 @@ const BasicInfo = ({
                                     value={values.name || ''}
                                     onChange={handleChange}
                                     touched={touched.name}
-                                    inlineError={errors.name && touched.name ? errors.name
+                                    error={errors.name && touched.name ? errors.name
                                         : errors.message
                                             ? errors.message
                                             : ' '}
@@ -58,7 +62,7 @@ const BasicInfo = ({
                                     touched={touched.gender}
                                     error={errors.gender && touched.gender ? errors.gender : ' '}
                                 />
-                            </div>
+                            {/* </div> */}
                             <FormDateInput
                                 className={classNames("profile__form-input", { "field-error": errors.date_of_birth && touched.date_of_birth })}
                                 name="date_of_birth"
@@ -69,16 +73,12 @@ const BasicInfo = ({
                                 touched={touched.date_of_birth}
                                 error={errors.date_of_birth && touched.date_of_birth ? errors.date_of_birth : ' '}
                             />
-                            <Button
-                                className="partners__footer_submit-button"
-                                filled={true}
-                                size="large"
+                            <FormButton
                                 type="submit"
                                 disabled={(submitCount > 0 && !isValid && !errors.message) || 
                                     (Object.keys(touched).length === 0 && touched.constructor === Object)}
-                            >
-                                Next
-                            </Button>
+                                    label="Next"
+                            />
                         </Form>
                     )
                 }

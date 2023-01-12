@@ -74,7 +74,6 @@ const About = ({
                             />
                             <Button
                                 className="partners__footer_submit-button"
-                                filled={true}
                                 size="large"
                                 type="submit"
                                 disabled={(submitCount > 0 && !isValid && !errors.message) || 

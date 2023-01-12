@@ -1,39 +1,28 @@
 import React from 'react';
-import ReactSelect from 'react-select';
+import { FormControl, Select, InputLabel, MenuItem } from '@mui/material';
+import classNames from 'classnames';
 
-const FormSelectInput = ({ options, className, value, placeholder, beforeLabel, label, error, onChange }) => {
-  let onChanged = onChange || (() => true);
-  const colourStyles = {
-    option: (styles, { isFocused }) => {
-      return {
-        ...styles,
-        backgroundColor: isFocused
-          ? 'rgba(255,90,179,1) !important'
-          : undefined,
-        color: isFocused ? 'white' : undefined,
-      };
-    },
-  };
-
-  return (
-    <div className={className}>
-      {beforeLabel && (
-        <label className='text-input__before'>{beforeLabel}</label>
-      )}
-
-      <ReactSelect
-        className={`select-input__container`}
-        options={options}
-        value={value}
-        placeholder={placeholder}
-        classNamePrefix='select-input'
-        styles={colourStyles}
-        onChange={(e) => onChanged(e)}
-      />
-      {label && <label className='text-input__label'>{label}</label>}
-      {error && <label className='text-input__label-error'>{error}</label>}
-    </div>
-  );
+const FormSelectInput = ({ options, className, value, label, error, onChange }) => {
+    return (
+        <div className={classNames(className, "inputSelect")}>
+            <FormControl variant="standard" 
+            sx={{
+                width: "100%",
+                maxWidth: '100%',
+            }}
+            >
+                <InputLabel id={label}>{label}</InputLabel>
+                <Select
+                    value={value}
+                    onChange={onChange}
+                    label={label}
+                >
+                    {options.map((item, index) => <MenuItem key={index} value={item.value}>{item.label}</MenuItem>)}
+                </Select>
+            </FormControl>
+            {error && <label className='error'>{error}</label>}
+        </div>
+    );
 };
 
 export default FormSelectInput;
