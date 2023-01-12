@@ -13,11 +13,12 @@ const Item = styled(Paper)(({ theme }) => ({
   textAlign: 'center',
   color: theme.palette.text.secondary,
 }));
-const Profile = () => {
+const Profile = (props) => {
+  // console.log({ props });
   return (
     <div className='profile'>
       <Typography className='profile_heading'>Profile</Typography>
-      <Typography className='profile_subheading'>I am Farhan Ahmed</Typography>
+      <Typography className='profile_subheading'>I am { props.posts.name }</Typography>
       <Box sx={{ flexGrow: 1 }}>
       <Grid container spacing={{ xs: 2, md: 2 }} columns={{ xs: 4, sm: 8, md: 12 }}>
         {/* {Array.from(Array(6)).map((_, index) => ( */}
@@ -26,7 +27,7 @@ const Profile = () => {
               <div>
             <Avatar alt="Remy Sharp" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS1BwYl1Svb2h_YRhj9tcnZk0yAuIHh3oBM03dzDa8f&s" className='profile_image__avatar'/>
             </div>
-            <h3 className='profile_image__heading'>Hello I'm Farhan Ahmed</h3>
+              <h3 className='profile_image__heading'>Hello I&apos;m { props.posts.name }</h3>
             <p className='profile_image__summary'>
             After hydration, Next.js will trigger an update to your application to provide the route parameters in the query object.
             </p>
@@ -36,11 +37,11 @@ const Profile = () => {
             <Item className='profile_details'>
               <Typography variant='h5' className='profile_details__heading'>Details</Typography>
               <p className='profile_details__heading'>Name:</p>
-              <p>Farhan Ahmed</p>
+              <p>{ props.posts.name}</p>
               <p className='profile_details__heading'>Date Of Birth:</p>
-              <p>23-09-2023</p>
+              <p>{ props.posts.DOB}</p>
               <p className='profile_details__heading'>Location:</p>
-              <p>1907/2 azizabad FB Area Karachi</p>
+              <p>{ props.posts.location }</p>
             </Item>
           </Grid>
           <Grid xs={4} sm={8} md={4} >
@@ -64,15 +65,16 @@ export async function getServerSideProps({res,req,params}) {
     try {
       let response = await fetch('http://localhost:3000/api/hello');
       let posts = await response.json();
-  console.log(posts)
+  // console.log(posts)
       return {
         props: { posts: JSON.parse(JSON.stringify(posts)) },
       };
     } catch (e) {
       console.error(e);
     }
-  console.log(params.slug[0],"<===params")
+  // console.log(params.slug[0],"<===params")
+  // console.log('posts ---> ', posts);
   return {
-    props: {}, // will be passed to the page component as props
+    props: {posts}, // will be passed to the page component as props
   }
 }
