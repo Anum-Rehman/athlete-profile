@@ -14,7 +14,6 @@ export default async (req, res) => {
             _id: objectId
         }
         const { name, gender, dob, location, team, about, interest, image, sports } = req.body;
-        console.log({ name, gender, dob, location, team, about, interest, image, sports });
 
         const update = { $set: { name, gender, dob, location, team, about, interest, image, sports } };
         const user = await db.collection("user").findOneAndUpdate(filter, update, { returnOriginal: false });
