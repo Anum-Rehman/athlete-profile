@@ -1,13 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import { Form, Formik } from 'formik';
 import classNames from 'classnames';
+import * as Yup from 'yup';
+import FormTextInput from '../FormTextInput';
+import FormSelectInput from '../FormSelectInput';
+import FormDateInput from '../FormDateInput';
+import { Button } from '@mui/material';
 
+
+
+const genders = [
+    { value: 'male', label: 'Male' },
+    { value: 'female', label: 'Female' },
+    { value: 'other', label: 'Other' }
+];
 const AboutSchema = Yup.object().shape({
     name: Yup.string()
         .required('Required')
 });
-
-
 const About = ({
     handleNextClick
 }) => {
@@ -19,7 +29,7 @@ const About = ({
                 location: '',
                 team: ''
             }}
-            validationSchema={BasicInfoSchema}
+            validationSchema={AboutSchema}
             onSubmit={handleNextClick}
         >
             {
@@ -80,4 +90,4 @@ const About = ({
     )
 }
 
-export default BasicInfo;
+export default About;

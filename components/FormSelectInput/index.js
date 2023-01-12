@@ -2,7 +2,7 @@ import React from 'react';
 import ReactSelect from 'react-select';
 
 const FormSelectInput = ({ options, className, value, placeholder, beforeLabel, label, error, onChange }) => {
-  const onChange = onChange || (() => true);
+  let onChanged = onChange || (() => true);
   const colourStyles = {
     option: (styles, { isFocused }) => {
       return {
@@ -14,7 +14,7 @@ const FormSelectInput = ({ options, className, value, placeholder, beforeLabel, 
       };
     },
   };
-  
+
   return (
     <div className={className}>
       {beforeLabel && (
@@ -28,7 +28,7 @@ const FormSelectInput = ({ options, className, value, placeholder, beforeLabel, 
         placeholder={placeholder}
         classNamePrefix='select-input'
         styles={colourStyles}
-        onChange={(e) => onChange(e)}
+        onChange={(e) => onChanged(e)}
       />
       {label && <label className='text-input__label'>{label}</label>}
       {error && <label className='text-input__label-error'>{error}</label>}
